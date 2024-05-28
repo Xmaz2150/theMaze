@@ -2,15 +2,17 @@
 
 /**
  * m_init - initializes integral types
- * @win: Input, main game window
  * @player: Input, player
+ * @map: Input, map
+ * @math: Input, lookup tables
  *
  * Return: (0) Success
  **/
-int m_init(SDL_Instance *win, Player *player)
+int m_init(Player *player, Grid *map, Math *math)
 {
-	(void)player;
-	(void)win;
+	if (init_player(player) == 1 || init_map(map) == 1)
+		return (1);
+	precompute_lookup_tables(math);
 	return (0);
 }
 
@@ -26,9 +28,44 @@ int init_player(Player *player)
 		return (1);
 	player->width = 10;
 	player->height = 10;
-	player->x = 64;
+	player->x = 100;
 	player->y = 240;
 	player->ang = 60.0;
+	return (0);
+}
+
+/**
+ * init_map - initializes map
+ * @map: Input, map
+ *
+ * Return: (0) Success
+ **/
+
+int init_map(Grid *map)
+{
+	int i;
+
+	if (map == NULL)
+		return (1);
+
+	map->gridX = 8;
+	map->gridY = 8;
+	map->gridS = 64;
+
+	int grid[] = {
+		1, 1, 1, 1, 1, 1, 1, 1,
+		1, 0, 0, 0, 0, 0, 1, 1,
+		1, 1, 0, 1, 0, 0, 0, 1,
+		1, 0, 0, 0, 0, 1, 0, 1,
+		1, 0, 0, 0, 0, 1, 0, 1,
+		1, 0, 0, 0, 0, 1, 0, 1,
+		1, 0, 0, 0, 0, 1, 0, 1,
+		1, 1, 1, 1, 1, 1, 1, 1,
+	};
+
+	for (i = 0; i < (8 * 8); i++)
+		map->grid[i] = grid[i];
+
 	return (0);
 }
 

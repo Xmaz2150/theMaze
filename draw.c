@@ -4,24 +4,46 @@
  * draw_stuff - draws graphics to window
  * @win: Input, window
  * @player: Input, player
+ * @map: Input, map
+ * @math: Input, sin and cos lookups
  **/
-void draw_stuff(SDL_Instance *win, Player *player)
+void draw_stuff(SDL_Instance *win, Player *player, Grid *map, Math *math)
 {
-	(void) win;
-	(void) player;
+	float end_x, end_y, i;
+	int center_x, center_y, radius;
+
+	draw_ray(win, player, map, math);
 }
 
 /**
- * draw_rect - draws rectangle to screen provided color is already set
+ * draw_rect - draws rectplayer->ang to screen provided color is already set
  * @win: Input, window
  * @beginX: Input, starting point along x axis
  * @beginY: Input, starting point along y axis
- * @w: Input, rectangle width
- * @h: Input, rectangle height
+ * @w: Input, rectplayer->ang width
+ * @h: Input, rectplayer->ang height
  **/
 void draw_rect(SDL_Instance *win, int beginX, int beginY, int w, int h)
 {
 	SDL_Rect fillRect = {beginX, beginY, w, h};
 
 	SDL_RenderFillRect(win->renderer, &fillRect);
+}
+
+/**
+ * draw_line - draws line to screen provided color is already set
+ * @win: Input, window
+ * @beginX: Input, starting point along x axis
+ * @beginY: Input, starting point along y axis
+ * @endX: Input, last point along x axis
+ * @endY: Input, last point along y axis
+ **/
+void draw_line(SDL_Instance *win, int beginX, int beginY, int endX, int endY)
+{
+	SDL_RenderDrawLine(win->renderer,
+		     beginX,
+		     beginY,
+		     endX,
+		     endY
+	);
 }

@@ -15,20 +15,23 @@ int main(int argc, char *argv[])
 
 	SDL_Instance win;
 	Player player;
+	Grid map;
+	Math math;
 
-	if (init_instance(&win) == 1 || init_player(&player) == 1)
+	if (init_instance(&win) == 1 || m_init(&player, &map, &math))
 		return (1);
 
 	while (1)
 	{
-		SDL_SetRenderDrawColor(win.renderer, 0, 0, 0, 255);
+		SDL_SetRenderDrawColor(win.renderer, 200, 200, 200, 255);
 		SDL_RenderClear(win.renderer);
 
-		if (key_events() == 1)
+		if (key_events(&player) == 1)
 			break;
 
-		draw_stuff(&win, &player);
+		draw_stuff(&win, &player, &map, &math);
 		SDL_RenderPresent(win.renderer);
+		SDL_Delay(10);
 	}
 
 	SDL_DestroyRenderer(win.renderer);
