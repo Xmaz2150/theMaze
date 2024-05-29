@@ -1,5 +1,6 @@
 #include "maze.h"
 /*gcc -o maze maze.c -Iinclude/SDL2 -Llib -lmingw32 -lSDL2main -lSDL2*/
+/*gcc -Wall -Werror -Wextra -pedantic *.c -o maze -lSDL2 -lm*/
 
 /**
  * main - entry point for the Maze
@@ -26,7 +27,9 @@ int main(int argc, char *argv[])
 		SDL_SetRenderDrawColor(win.renderer, 200, 200, 200, 255);
 		SDL_RenderClear(win.renderer);
 
-		if (key_events(&player) == 1)
+		player.dx = math.cos_lookup[(int)player.ang % 360];
+		player.dy = -math.sin_lookup[(int)player.ang % 360];
+		if (key_events(&player, &math) == 1)
 			break;
 
 		draw_stuff(&win, &player, &map, &math);

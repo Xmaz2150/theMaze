@@ -19,6 +19,8 @@ typedef struct Player {
 	int x;
 	int y;
 	float ang;
+	float dx;
+	float dy;
 } Player;
 
 typedef struct Grid {
@@ -56,6 +58,6 @@ void draw_ray(SDL_Instance *win, Player *player, Grid *map, Math *math);
 Vector *x_rays(Player *player, Grid *map, float ra, float Tan, Math *math);
 Vector *y_rays(Player *player, Grid *map, float ra, float Tan, Math *math);
 
-int key_events(Player *player);
+int key_events(Player *player, Math *math);
 
 #endif /* MAZE_H_ */

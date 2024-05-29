@@ -31,6 +31,8 @@ int init_player(Player *player)
 	player->x = 100;
 	player->y = 240;
 	player->ang = 60.0;
+	player->dx = 0.0;
+	player->dy = 0.0;
 	return (0);
 }
 
