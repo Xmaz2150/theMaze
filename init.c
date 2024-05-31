@@ -28,8 +28,8 @@ int init_player(Player *player)
 		return (1);
 	player->width = 10;
 	player->height = 10;
-	player->x = 100;
-	player->y = 240;
+	player->x = 96;
+	player->y = 224;
 	player->ang = 60.0;
 	player->dx = 0.0;
 	player->dy = 0.0;
@@ -45,7 +45,7 @@ int init_player(Player *player)
 
 int init_map(Grid *map)
 {
-	int i;
+	int i, j;
 
 	if (map == NULL)
 		return (1);
@@ -67,6 +67,21 @@ int init_map(Grid *map)
 
 	for (i = 0; i < (8 * 8); i++)
 		map->grid[i] = grid[i];
+
+	/*int grid[8][8] = {
+		{1, 1, 1, 1, 1, 1, 1, 1},
+		{1, 0, 0, 0, 0, 0, 1, 1},
+		{1, 1, 0, 1, 0, 0, 0, 1},
+		{1, 0, 0, 0, 0, 1, 0, 1},
+		{1, 0, 0, 0, 0, 1, 0, 1},
+		{1, 0, 0, 0, 0, 1, 0, 1},
+		{1, 0, 0, 0, 0, 1, 0, 1},
+		{1, 1, 1, 1, 1, 1, 1, 1}
+	};
+
+	for (i = 0; i < (8); i++)
+		for (j = 0; j < (8); j++)
+			map->grid[i][j] = grid[i][j];*/
 
 	return (0);
 }

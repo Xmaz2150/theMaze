@@ -41,6 +41,9 @@ typedef struct Math {
 	double cos_lookup[360];
 } Math;
 
+/**/
+void ray_cast(SDL_Instance *win, Player *player, Grid *map, Math *math);
+
 void precompute_lookup_tables(Math *math);
 float deg_to_rad(float a);
 int fix_ang(int a);
