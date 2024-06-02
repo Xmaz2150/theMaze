@@ -58,6 +58,6 @@ void draw_ray(SDL_Instance *win, Player *player, Grid *map, Math *math);
 Vector *x_rays(Player *player, Grid *map, float ra, float Tan, Math *math);
 Vector *y_rays(Player *player, Grid *map, float ra, float Tan, Math *math);
 
-int key_events(Player *player, Math *math);
+int key_events(Player *player, Math *math, Grid *map);
 
 #endif /* MAZE_H_ */

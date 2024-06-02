@@ -29,7 +29,7 @@ int main(int argc, char *argv[])
 
 		player.dx = math.cos_lookup[(int)player.ang % 360];
 		player.dy = -math.sin_lookup[(int)player.ang % 360];
-		if (key_events(&player, &math) == 1)
+		if (key_events(&player, &math, &map) == 1)
 			break;
 
 		draw_stuff(&win, &player, &map, &math);
