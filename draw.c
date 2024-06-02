@@ -13,6 +13,10 @@ void draw_stuff(SDL_Instance *win, Player *player, Grid *map, Math *math)
 	int center_x, center_y, radius;
 
 	draw_ray(win, player, map, math);
+
+	draw_grid(win, map);
+	SDL_SetRenderDrawColor(win->renderer, 255, 0, 0, 255);
+	draw_rect(win, player->x / 10 + 5, player->y / 10 + 5, 5, 5);
 }
 
 /**
@@ -46,4 +50,33 @@ void draw_line(SDL_Instance *win, int beginX, int beginY, int endX, int endY)
 		     endX,
 		     endY
 	);
+}
+
+/**
+ * draw_grid - draws grid
+ * @win: Input, window
+ * @map: Input, map
+ **/
+void draw_grid(SDL_Instance *win, Grid *map)
+{
+	int x, y, xo, yo, idx, gridS;
+
+	gridS = 10;
+	for (y = 0; y < map->gridY; y++)
+	{
+		for (x = 0; x < map->gridX; x++)
+		{
+			idx = y * map->gridX + x;
+
+			xo = x * gridS;
+			yo = y * gridS;
+			SDL_Rect fillRect = {xo, yo, gridS - 1, gridS - 1};
+
+			if (map->grid[idx] == 1)
+				SDL_SetRenderDrawColor(win->renderer, 255, 255, 0, 255);
+			else
+				SDL_SetRenderDrawColor(win->renderer, 255, 255, 255, 255);
+			SDL_RenderFillRect(win->renderer, &fillRect);
+		}
+	}
 }

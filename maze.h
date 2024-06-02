@@ -53,6 +53,7 @@ int init_map(Grid *map);
 void draw_stuff(SDL_Instance *win, Player *player, Grid *map, Math *math);
 void draw_rect(SDL_Instance *win, int beginX, int beginY, int width, int height);
 void draw_line(SDL_Instance *win, int bginX, int bginY, int endX, int endY);
+void draw_grid(SDL_Instance *win, Grid *map);
 
 void draw_ray(SDL_Instance *win, Player *player, Grid *map, Math *math);
 Vector *x_rays(Player *player, Grid *map, float ra, float Tan, Math *math);
