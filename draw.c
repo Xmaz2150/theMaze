@@ -20,9 +20,9 @@ void draw_stuff(SDL_Instance *win, Player *player, Grid *map, Math *math)
 						 center_y, 
 						 center_x + player->dx * 50,
 						 center_y + player->dy * 50);*/
-	draw_rect(win, player->x -5, player->y-5, 10, 10);
-	/* draw_ray(win, player, map, math); */
-	ray_cast(win, player, map, math);
+	//draw_rect(win, player->x -5, player->y-5, 10, 10);
+	draw_ray(win, player, map, math);
+	//ray_cast(win, player, map, math);
 }
 
 /**
