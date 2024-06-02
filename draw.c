@@ -14,9 +14,12 @@ void draw_stuff(SDL_Instance *win, Player *player, Grid *map, Math *math)
 
 	draw_ray(win, player, map, math);
 
-	draw_grid(win, map);
-	SDL_SetRenderDrawColor(win->renderer, 255, 0, 0, 255);
-	draw_rect(win, player->x / 10 + 5, player->y / 10 + 5, 5, 5);
+	if (map->draw)
+	{
+		draw_grid(win, map);
+		SDL_SetRenderDrawColor(win->renderer, 255, 0, 0, 255);
+		draw_rect(win, player->x / 10 + 5, player->y / 10 + 5, 5, 5);
+	}
 }
 
 /**

@@ -3,6 +3,8 @@
 
 #include <stdio.h>
 #include <SDL2/SDL.h>
+#include <stdbool.h>
+
 #define PI 3.14159
 
 typedef struct SDL_Instance {
@@ -24,6 +26,7 @@ typedef struct Player {
 } Player;
 
 typedef struct Grid {
+	bool draw;
 	int gridX;
 	int gridY;
 	int gridS;

@@ -50,6 +50,7 @@ int init_map(Grid *map)
 	if (map == NULL)
 		return (1);
 
+	map->draw = true;
 	map->gridX = 8;
 	map->gridY = 8;
 	map->gridS = 64;
