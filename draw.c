@@ -3,17 +3,17 @@
 /**
  * draw_stuff - draws graphics to window
  * @win: Input, window
- * @player: Input, player
- * @map: Input, map
- * @math: Input, sin and cos lookups
+ * @this: Input- player, grid & math
  **/
-void draw_stuff(SDL_Instance *win, Player *player, Grid *map, Math *math)
+void draw_stuff(SDL_Instance *win, Maze *this)
 {
+	MAZE
+
 	SDL_SetRenderDrawColor(win->renderer, 0, 0, 125, 255);
 	draw_rect(win, 0, 0, 305, 100);
 	SDL_SetRenderDrawColor(win->renderer, 0, 125, 0, 255);
 	draw_rect(win, 0, 100, 305, 100);
-	draw_ray(win, player, map, math);
+	draw_ray(win, this);
 
 	if (map->draw)
 	{

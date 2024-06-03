@@ -11,28 +11,27 @@ Vector *cast_ray(Maze this, Vector *arr,  int dof, float dis, float Tan);
 /**
  * draw_ray - casts rays
  * @win: Input, window
- * @player: Input, player
- * @map: Input, grid
- * @math: Input, sin and cos lookups
+ * @this: Input- player, grid & math
  **/
 
-void draw_ray(SDL_Instance *win, Player *player, Grid *map, Math *math)
+void draw_ray(SDL_Instance *win, Maze *this)
 {
 	float vx, vy, rx, ry, ra, r, Tan, slice;
 	Vector *vecX, *vecY;
 
+	MAZE
+
 	ra = fix_ang(player->ang + 30);
 	for (r = 0; r <= 60; r++)
 	{
-		/** ---Vertical--- **/
-
 		Tan = tan(deg_to_rad(ra));
-		vecY = y_rays(player, map, ra, Tan, math);
+		/** ---Vertical--- **/
+		vecY = vertical_lines(this, ra, Tan);
 		vx = vecY->x;
 		vy = vecY->y;
 
 		/** ---Horizontal--- **/
-		vecX = x_rays(player, map, ra, Tan, math);
+		vecX = horizontal_lines(this, ra, Tan);
 
 		/** dark shade **/
 		SDL_SetRenderDrawColor(win->renderer, 125, 125, 125, 255);
@@ -61,21 +60,20 @@ void draw_ray(SDL_Instance *win, Player *player, Grid *map, Math *math)
 	}
 }
 /**
- * y_rays - casts rays along y axis
- * @player: Input, player
- * @map: Input, grid
+ * vertical_lines - casts rays along y axis
+ * @this: Input- player, grid & math
  * @ra: Input, current ray angle
  * @Tan: Input, tangent
- * @math: Input, sin and cos lookups
  *
  * Return: Vector
  **/
-Vector *y_rays(Player *player, Grid *map, float ra, float Tan, Math *math)
+Vector *vertical_lines(Maze *this, float ra, float Tan)
 {
 	float rx, ry, xo, yo, disV;
 	int dof;
 	Vector *vec;
-	Maze this;
+
+	MAZE
 
 	dof = 0;
 	disV = 100000;
@@ -100,32 +98,28 @@ Vector *y_rays(Player *player, Grid *map, float ra, float Tan, Math *math)
 		dof = map->DOF;
 	}
 
-	this.player = player;
-	this.map = map;
-	this.math = math;
 	Vector arr[] = {{rx, ry, ra}, {xo, yo, 0.0}};
 
-	vec = cast_ray(this, arr, dof, disV, Tan);
+	vec = cast_ray(*this, arr, dof, disV, Tan);
 	return (vec);
 
 }
 
 /**
- * x_rays - casts rays along x axis
- * @player: Input, player
- * @map: Input, grid
+ * horizontal_lines - casts rays along x axis
+ * @this: Input- player, grid & math
  * @ra: Input, current ray angle
  * @Tan: Input, tangent
- * @math: Input, sin and cos lookups
  *
  * Return: Vector
  **/
-Vector *x_rays(Player *player, Grid *map, float ra, float Tan, Math *math)
+Vector *horizontal_lines(Maze *this, float ra, float Tan)
 {
 	float rx, ry, xo, yo, disH;
 	int dof;
 	Vector *vec;
-	Maze this;
+
+	MAZE
 
 	dof = 0;
 	disH = 100000;
@@ -152,12 +146,9 @@ Vector *x_rays(Player *player, Grid *map, float ra, float Tan, Math *math)
 		dof = map->DOF;
 	}
 
-	this.player = player;
-	this.map = map;
-	this.math = math;
 	Vector arr[] = {{rx, ry, ra}, {xo, yo, 0.0}};
 
-	vec = cast_ray(this, arr, dof, disH, Tan);
+	vec = cast_ray(*this, arr, dof, disH, Tan);
 	return (vec);
 }
 
@@ -166,6 +157,7 @@ Vector *x_rays(Player *player, Grid *map, float ra, float Tan, Math *math)
  *
  * @this: Input, player, map and math variables
  * @arr: Input, ray and offset coordinates
+ * @dof: Input, depth of field
  * @dis: Input, distance
  * @Tan: Input, tangent
  *

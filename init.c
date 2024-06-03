@@ -2,17 +2,14 @@
 
 /**
  * m_init - initializes integral types
- * @player: Input, player
- * @map: Input, map
- * @math: Input, lookup tables
- *
+ * @maze: Input- player, grid & math
  * Return: (0) Success
  **/
-int m_init(Player *player, Grid *map, Math *math)
+int m_init(Maze *maze)
 {
-	if (init_player(player) == 1 || init_map(map) == 1)
+	if (init_player(maze->player) == 1 || init_map(maze->map) == 1)
 		return (1);
-	precompute_lookup_tables(math);
+	precompute_lookup_tables(maze->math);
 	return (0);
 }
 
