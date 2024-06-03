@@ -46,6 +46,12 @@ typedef struct Math {
 	double cos_lookup[360];
 } Math;
 
+typedef struct Maze {
+	Player *player;
+	Grid *map;
+	Math *math;
+} Maze;
+
 void precompute_lookup_tables(Math *math);
 float deg_to_rad(float a);
 int fix_ang(int a);
