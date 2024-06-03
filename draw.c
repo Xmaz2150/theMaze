@@ -9,9 +9,6 @@
  **/
 void draw_stuff(SDL_Instance *win, Player *player, Grid *map, Math *math)
 {
-	float end_x, end_y, i;
-	int center_x, center_y, radius;
-
 	draw_ray(win, player, map, math);
 }
 
