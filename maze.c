@@ -15,11 +15,18 @@ int main(int argc, char *argv[])
 	(void)argv;
 
 	SDL_Instance win;
+
+	Maze maze;
+
 	Player player;
 	Grid map;
 	Math math;
 
-	if (init_instance(&win) == 1 || m_init(&player, &map, &math))
+	maze.player = &player;
+	maze.map = &map;
+	maze.math = &math;
+
+	if (init_instance(&win) == 1 || m_init(&maze))
 		return (1);
 
 	while (1)
@@ -27,12 +34,12 @@ int main(int argc, char *argv[])
 		SDL_SetRenderDrawColor(win.renderer, 200, 200, 200, 255);
 		SDL_RenderClear(win.renderer);
 
-		player.dx = math.cos_lookup[(int)player.ang % 360];
-		player.dy = -math.sin_lookup[(int)player.ang % 360];
-		if (key_events(&player, &math, &map) == 1)
+		maze.player->dx = maze.math->cos_lookup[(int)maze.player->ang % 360];
+		maze.player->dy = -maze.math->sin_lookup[(int)maze.player->ang % 360];
+		if (key_events(&maze) == 1)
 			break;
 
-		draw_stuff(&win, &player, &map, &math);
+		draw_stuff(&win, &maze);
 		SDL_RenderPresent(win.renderer);
 		SDL_Delay(10);
 	}

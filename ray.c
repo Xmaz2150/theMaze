@@ -5,31 +5,33 @@
 #define DIST_TO_PLANE 277
 #define SLICE_W 5
 #define ANGLE_INC 1
+
+Vector *cast_ray(Maze this, Vector *arr,  int dof, float dis, float Tan);
+
 /**
  * draw_ray - casts rays
  * @win: Input, window
- * @player: Input, player
- * @map: Input, grid
- * @math: Input, sin and cos lookups
+ * @this: Input- player, grid & math
  **/
 
-void draw_ray(SDL_Instance *win, Player *player, Grid *map, Math *math)
+void draw_ray(SDL_Instance *win, Maze *this)
 {
 	float vx, vy, rx, ry, ra, r, Tan, slice;
 	Vector *vecX, *vecY;
 
+	MAZE
+
 	ra = fix_ang(player->ang + 30);
 	for (r = 0; r <= 60; r++)
 	{
-		/** ---Vertical--- **/
-
 		Tan = tan(deg_to_rad(ra));
-		vecY = y_rays(player, map, ra, Tan, math);
+		/** ---Vertical--- **/
+		vecY = vertical_lines(this, ra, Tan);
 		vx = vecY->x;
 		vy = vecY->y;
 
 		/** ---Horizontal--- **/
-		vecX = x_rays(player, map, ra, Tan, math);
+		vecX = horizontal_lines(this, ra, Tan);
 
 		/** dark shade **/
 		SDL_SetRenderDrawColor(win->renderer, 125, 125, 125, 255);
@@ -53,26 +55,25 @@ void draw_ray(SDL_Instance *win, Player *player, Grid *map, Math *math)
 			slice = PLANE_H;
 
 		draw_rect(win, (r * SLICE_W), (PLANE_H - slice) / 2, SLICE_W, slice);
-		/* draw_rect(win, (r * SLICE_W), (PLANE_H / 2) - (slice / 2), SLICE_W, slice); */
 
 		ra = fix_ang(ra - ANGLE_INC);
 	}
 }
 /**
- * y_rays - casts rays along y axis
- * @player: Input, player
- * @map: Input, grid
+ * vertical_lines - casts rays along y axis
+ * @this: Input- player, grid & math
  * @ra: Input, current ray angle
  * @Tan: Input, tangent
- * @math: Input, sin and cos lookups
  *
  * Return: Vector
  **/
-Vector *y_rays(Player *player, Grid *map, float ra, float Tan, Math *math)
+Vector *vertical_lines(Maze *this, float ra, float Tan)
 {
 	float rx, ry, xo, yo, disV;
-	int mx, my, mp, dof;
+	int dof;
 	Vector *vec;
+
+	MAZE
 
 	dof = 0;
 	disV = 100000;
@@ -94,53 +95,31 @@ Vector *y_rays(Player *player, Grid *map, float ra, float Tan, Math *math)
 	{
 		rx = player->x;
 		ry = player->y;
-		dof = 8;
+		dof = map->DOF;
 	}
 
-	while (dof < 8)
-	{
-		mx = (int)(rx) >> 6;
-		my = (int)(ry) >> 6;
-		mp = my * map->gridX + mx;
-		if (mp > 0 && mp < map->gridX * map->gridY && map->grid[mp] == 1)
-		{
-			dof = 8;
-			disV = math->cos_lookup[(int)ra % 360] * (rx - player->x) - math->sin_lookup[(int)ra % 360] * (ry - player->y);
-		}
-		else
-		{
-			rx += xo;
-			ry += yo;
-			dof += 1;
-		}
-	}
+	Vector arr[] = {{rx, ry, ra}, {xo, yo, 0.0}};
 
-	vec = malloc(sizeof(Vector));
-	if (vec == NULL)
-		return (NULL);
-
-	vec->x = rx;
-	vec->y = ry;
-	vec->dist = disV;
+	vec = cast_ray(*this, arr, dof, disV, Tan);
 	return (vec);
 
 }
 
 /**
- * x_rays - casts rays along x axis
- * @player: Input, player
- * @map: Input, grid
+ * horizontal_lines - casts rays along x axis
+ * @this: Input- player, grid & math
  * @ra: Input, current ray angle
  * @Tan: Input, tangent
- * @math: Input, sin and cos lookups
  *
  * Return: Vector
  **/
-Vector *x_rays(Player *player, Grid *map, float ra, float Tan, Math *math)
+Vector *horizontal_lines(Maze *this, float ra, float Tan)
 {
 	float rx, ry, xo, yo, disH;
-	int mx, my, mp, dof;
+	int dof;
 	Vector *vec;
+
+	MAZE
 
 	dof = 0;
 	disH = 100000;
@@ -164,18 +143,59 @@ Vector *x_rays(Player *player, Grid *map, float ra, float Tan, Math *math)
 	{
 		rx = player->x;
 		ry = player->y;
-		dof = 8;
+		dof = map->DOF;
 	}
 
-	while (dof < 8)
+	Vector arr[] = {{rx, ry, ra}, {xo, yo, 0.0}};
+
+	vec = cast_ray(*this, arr, dof, disH, Tan);
+	return (vec);
+}
+
+/**
+ * cast_ray - spits out ray until wall hit
+ *
+ * @this: Input, player, map and math variables
+ * @arr: Input, ray and offset coordinates
+ * @dof: Input, depth of field
+ * @dis: Input, distance
+ * @Tan: Input, tangent
+ *
+ * Return: Vector (ray: x&y, distance)
+ **/
+Vector *cast_ray(Maze this, Vector *arr,  int dof, float dis, float Tan)
+{
+	int mx, my, mp, dov, gridX, gridY;
+	float ra, rx, ry, px, py, xo, yo, dist_rpx, dist_rpy;
+	Vector *vec;
+
+	ra = arr[0].dist;
+	rx = arr[0].x;
+	ry = arr[0].y;
+
+	xo = arr[1].x;
+	yo = arr[1].y;
+
+	px = this.player->x;
+	py = this.player->y;
+
+	dov = this.map->DOF;
+
+	while (dof < dov)
 	{
 		mx = (int)(rx) >> 6;
 		my = (int)(ry) >> 6;
-		mp = my * map->gridX + mx;
-		if (mp > 0 && mp < map->gridX * map->gridY && map->grid[mp] == 1)
+		mp = my * this.map->gridX + mx;
+
+		gridX = this.map->gridX;
+		gridY = this.map->gridY;
+		if (mp > 0 && mp < gridX * gridY && this.map->grid[mp] == 1)
 		{
-			dof = 8;
-			disH = math->cos_lookup[(int)ra % 360] * (rx - player->x) - math->sin_lookup[(int)ra % 360] * (ry - player->y);
+			dof = dov;
+			dist_rpx = this.math->cos_lookup[(int)ra % 360] * (rx - px);
+			dist_rpy = this.math->sin_lookup[(int)ra % 360] * (ry - py);
+
+			dis = dist_rpx - dist_rpy;
 		}
 		else
 		{
@@ -191,6 +211,6 @@ Vector *x_rays(Player *player, Grid *map, float ra, float Tan, Math *math)
 
 	vec->x = rx;
 	vec->y = ry;
-	vec->dist = disH;
+	vec->dist = dis;
 	return (vec);
 }
