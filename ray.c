@@ -3,7 +3,7 @@
 #define PLANE_W 320
 #define PLANE_H 200
 #define DIST_TO_PLANE 277
-#define SLICE_W 10
+#define SLICE_W 5
 #define ANGLE_INC 1
 /**
  * draw_ray - casts rays
@@ -18,8 +18,8 @@ void draw_ray(SDL_Instance *win, Player *player, Grid *map, Math *math)
 	float vx, vy, rx, ry, ra, r, Tan, slice;
 	Vector *vecX, *vecY;
 
-	ra = fix_ang(player->ang + 35);
-	for (r = 0; r < 72; r++)
+	ra = fix_ang(player->ang + 30);
+	for (r = 0; r <= 60; r++)
 	{
 		/** ---Vertical--- **/
 
@@ -31,14 +31,14 @@ void draw_ray(SDL_Instance *win, Player *player, Grid *map, Math *math)
 		/** ---Horizontal--- **/
 		vecX = x_rays(player, map, ra, Tan, math);
 
-		/**dark shade**/
+		/** dark shade **/
 		SDL_SetRenderDrawColor(win->renderer, 125, 125, 125, 255);
 		if (vecY->dist < vecX->dist)
 		{
 			rx = vx;
 			ry = vy;
 			vecX->dist = vecY->dist;
-			/**light shade**/
+			/** light shade **/
 			SDL_SetRenderDrawColor(win->renderer, 105, 105, 105, 255);
 		}
 
@@ -46,7 +46,14 @@ void draw_ray(SDL_Instance *win, Player *player, Grid *map, Math *math)
 
 		vecX->dist *= cos(deg_to_rad(ra - player->ang));
 		slice = ((map->gridS << 1) / vecX->dist) * DIST_TO_PLANE;
-		draw_rect(win, (r * SLICE_W), (PLANE_H / 2) - (slice / 2), SLICE_W, slice);
+
+		slice /= 2;
+
+		if (slice > PLANE_H)
+			slice = PLANE_H;
+
+		draw_rect(win, (r * SLICE_W), (PLANE_H - slice) / 2, SLICE_W, slice);
+		/* draw_rect(win, (r * SLICE_W), (PLANE_H / 2) - (slice / 2), SLICE_W, slice); */
 
 		ra = fix_ang(ra - ANGLE_INC);
 	}

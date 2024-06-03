@@ -14,10 +14,10 @@ FOV : 60
 
 **Projection Plane**
 
-width : 320
+width : 305
 
 height : 200
 
 distance to PP : (height/2)/tan(pFOV/2)
 
-angle between subsequent rays : pFOV/width
+angle between subsequent rays : 1 degree
