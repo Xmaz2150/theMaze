@@ -75,5 +75,6 @@ Vector *horizontal_lines(Maze *maze, float ra, float Tan);
 Vector *vertical_lines(Maze *maze, float ra, float Tan);
 
 int key_events(Maze *maze);
+void update_pos(Maze *maze, float dx, float dy, char flag);
 
 #endif /* MAZE_H_ */
