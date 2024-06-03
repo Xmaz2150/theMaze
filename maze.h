@@ -27,10 +27,12 @@ typedef struct Player {
 
 typedef struct Grid {
 	bool draw;
+
+	int DOF;
 	int gridX;
 	int gridY;
 	int gridS;
-	int grid[64];
+	int grid[400];
 } Grid;
 
 typedef struct Vector {

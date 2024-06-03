@@ -94,17 +94,17 @@ Vector *y_rays(Player *player, Grid *map, float ra, float Tan, Math *math)
 	{
 		rx = player->x;
 		ry = player->y;
-		dof = 8;
+		dof = map->DOF;
 	}
 
-	while (dof < 8)
+	while (dof < map->DOF)
 	{
 		mx = (int)(rx) >> 6;
 		my = (int)(ry) >> 6;
 		mp = my * map->gridX + mx;
 		if (mp > 0 && mp < map->gridX * map->gridY && map->grid[mp] == 1)
 		{
-			dof = 8;
+			dof = map->DOF;
 			disV = math->cos_lookup[(int)ra % 360] * (rx - player->x) - math->sin_lookup[(int)ra % 360] * (ry - player->y);
 		}
 		else
@@ -164,17 +164,17 @@ Vector *x_rays(Player *player, Grid *map, float ra, float Tan, Math *math)
 	{
 		rx = player->x;
 		ry = player->y;
-		dof = 8;
+		dof = map->DOF;
 	}
 
-	while (dof < 8)
+	while (dof < map->DOF)
 	{
 		mx = (int)(rx) >> 6;
 		my = (int)(ry) >> 6;
 		mp = my * map->gridX + mx;
 		if (mp > 0 && mp < map->gridX * map->gridY && map->grid[mp] == 1)
 		{
-			dof = 8;
+			dof = map->DOF;
 			disH = math->cos_lookup[(int)ra % 360] * (rx - player->x) - math->sin_lookup[(int)ra % 360] * (ry - player->y);
 		}
 		else
