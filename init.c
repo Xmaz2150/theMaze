@@ -2,17 +2,14 @@
 
 /**
  * m_init - initializes integral types
- * @player: Input, player
- * @map: Input, map
- * @math: Input, lookup tables
- *
+ * @maze: Input- player, grid & math
  * Return: (0) Success
  **/
-int m_init(Player *player, Grid *map, Math *math)
+int m_init(Maze *maze)
 {
-	if (init_player(player) == 1 || init_map(map) == 1)
+	if (init_player(maze->player) == 1 || init_map(maze->map) == 1)
 		return (1);
-	precompute_lookup_tables(math);
+	precompute_lookup_tables(maze->math);
 	return (0);
 }
 
@@ -50,38 +47,30 @@ int init_map(Grid *map)
 	if (map == NULL)
 		return (1);
 
-	map->gridX = 8;
-	map->gridY = 8;
+	map->draw = true;
+	map->gridX = 12;
+	map->gridY = 12;
 	map->gridS = 64;
 
+	map->DOF = map->gridX;
+
 	int grid[] = {
-		1, 1, 1, 1, 1, 1, 1, 1,
-		1, 0, 0, 0, 0, 0, 1, 1,
-		1, 1, 0, 1, 0, 0, 0, 1,
-		1, 0, 0, 0, 0, 1, 0, 1,
-		1, 0, 0, 0, 0, 1, 0, 1,
-		1, 0, 0, 0, 0, 1, 0, 1,
-		1, 0, 0, 0, 0, 1, 0, 1,
-		1, 1, 1, 1, 1, 1, 1, 1,
+		1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+		1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+		1, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1,
+		1, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1,
+		1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1,
+		1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1,
+		1, 0, 0, 0, 1, 1, 0, 1, 0, 1, 0, 1,
+		1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1,
+		1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1,
+		1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+		1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+		1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 	};
 
-	for (i = 0; i < (8 * 8); i++)
+	for (i = 0; i < (map->gridX * map->gridY); i++)
 		map->grid[i] = grid[i];
-
-	/*int grid[8][8] = {
-		{1, 1, 1, 1, 1, 1, 1, 1},
-		{1, 0, 0, 0, 0, 0, 1, 1},
-		{1, 1, 0, 1, 0, 0, 0, 1},
-		{1, 0, 0, 0, 0, 1, 0, 1},
-		{1, 0, 0, 0, 0, 1, 0, 1},
-		{1, 0, 0, 0, 0, 1, 0, 1},
-		{1, 0, 0, 0, 0, 1, 0, 1},
-		{1, 1, 1, 1, 1, 1, 1, 1}
-	};
-
-	for (i = 0; i < (8); i++)
-		for (j = 0; j < (8); j++)
-			map->grid[i][j] = grid[i][j];*/
 
 	return (0);
 }

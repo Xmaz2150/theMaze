@@ -42,14 +42,13 @@ void collide_f(Player **player, Grid *map, float dx, float dy)
 
 /**
  * key_events - listens to key presses
- * @player: Input, player
- * @math: Input, lookup tables
- * @map: Input, map
+ * @this: Input- player, grid & math
  *
  * Return: (0) Success
  **/
-int key_events(Player *player, Math *math, Grid *map)
+int key_events(Maze *this)
 {
+	MAZE
 	SDL_Event event;
 	SDL_KeyboardEvent key;
 
@@ -76,14 +75,15 @@ int key_events(Player *player, Math *math, Grid *map)
 					player->dy = -math->sin_lookup[(int)player->ang % 360];
 				}
 				if (key.keysym.sym == SDLK_UP)
-				{
 					collide_f(&player, map, player->dx * 5, player->dy * 5);
-				}
+
 				if (key.keysym.sym == SDLK_DOWN)
 				{
 					player->x -= player->dx * 5;
 					player->y -= player->dy * 5;
 				}
+				if (key.keysym.sym == SDLK_g)
+					map->draw = !map->draw;
 				break;
 		}
 	}
