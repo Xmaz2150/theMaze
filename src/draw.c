@@ -13,14 +13,14 @@ void draw_stuff(SDL_Instance *win, Maze *this)
 	draw_rect(win, 0, 0, 305, 100);
 	SDL_SetRenderDrawColor(win->renderer, 0, 125, 0, 255);
 	draw_rect(win, 0, 100, 305, 100);
-	draw_ray(win, this);
 
 	if (map->draw)
 	{
 		draw_grid(win, map);
 		SDL_SetRenderDrawColor(win->renderer, 255, 0, 0, 255);
-		draw_rect(win, player->x / 10 + 5, player->y / 10 + 5, 5, 5);
+		draw_rect(win, (player->x / 10) + 320 - 2.5, (player->y / 10) - 2.5, 5, 5);
 	}
+	draw_ray(win, this);
 }
 
 /**
@@ -39,14 +39,14 @@ void draw_rect(SDL_Instance *win, int beginX, int beginY, int w, int h)
 }
 
 /**
- * draw_line - draws line to screen provided color is already set
+ * draw_l - draws line to screen provided color is already set
  * @win: Input, window
  * @beginX: Input, starting point along x axis
  * @beginY: Input, starting point along y axis
  * @endX: Input, last point along x axis
  * @endY: Input, last point along y axis
  **/
-void draw_line(SDL_Instance *win, int beginX, int beginY, int endX, int endY)
+void draw_l(SDL_Instance *win, int beginX, int beginY, int endX, int endY)
 {
 	SDL_RenderDrawLine(win->renderer,
 		     beginX,
@@ -65,7 +65,7 @@ void draw_grid(SDL_Instance *win, Grid *map)
 {
 	int x, y, xo, yo, idx, gridS;
 
-	gridS = 10;
+	gridS = 7;
 	for (y = 0; y < map->gridY; y++)
 	{
 		for (x = 0; x < map->gridX; x++)
@@ -74,7 +74,7 @@ void draw_grid(SDL_Instance *win, Grid *map)
 
 			xo = x * gridS;
 			yo = y * gridS;
-			SDL_Rect fillRect = {xo, yo, gridS - 1, gridS - 1};
+			SDL_Rect fillRect = {xo + (320 - 2.5), yo - 2.5, gridS - 1, gridS - 1};
 
 			if (map->grid[idx] == 1)
 				SDL_SetRenderDrawColor(win->renderer, 255, 255, 0, 255);

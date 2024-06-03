@@ -1,6 +1,6 @@
 #include "../inc/maze.h"
 
-#define PLANE_W 320
+#define P_W 320
 #define PLANE_H 200
 #define DIST_TO_PLANE 277
 #define SLICE_W 5
@@ -24,14 +24,11 @@ void draw_ray(SDL_Instance *win, Maze *this)
 	for (r = 0; r <= 60; r++)
 	{
 		Tan = tan(deg_to_rad(ra));
-		/** ---Vertical--- **/
+
 		vecY = vertical_lines(this, ra, Tan);
 		vx = vecY->x;
 		vy = vecY->y;
-
-		/** ---Horizontal--- **/
 		vecX = horizontal_lines(this, ra, Tan);
-
 		/** dark shade **/
 		SDL_SetRenderDrawColor(win->renderer, 125, 125, 125, 255);
 		if (vecY->dist < vecX->dist)
@@ -39,19 +36,22 @@ void draw_ray(SDL_Instance *win, Maze *this)
 			rx = vx;
 			ry = vy;
 			vecX->dist = vecY->dist;
-			/** light shade **/
+			/** lighter shade **/
 			SDL_SetRenderDrawColor(win->renderer, 105, 105, 105, 255);
 		}
-		/**draw_line(win, player->x, player->y, rx, ry);**/
+		else
+		{
+			rx = vecX->x;
+			ry = vecX->y;
+		}
+		if (map->draw == true)
+			draw_l(win, player->x / 10 + P_W, player->y / 10, rx / 10 + P_W, ry / 10);
 		vecX->dist *= cos(deg_to_rad(ra - player->ang));
 		slice = ((map->gridS << 1) / vecX->dist) * DIST_TO_PLANE;
-
 		slice /= 2;
 		if (slice > PLANE_H)
 			slice = PLANE_H;
-
 		draw_rect(win, (r * SLICE_W), (PLANE_H - slice) / 2, SLICE_W, slice);
-
 		ra = fix_ang(ra - ANGLE_INC);
 	}
 }
