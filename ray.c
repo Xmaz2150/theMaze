@@ -6,8 +6,6 @@
 #define SLICE_W 5
 #define ANGLE_INC 1
 
-Vector *cast_ray(Maze this, Vector *arr,  int dof, float dis, float Tan);
-
 /**
  * draw_ray - casts rays
  * @win: Input, window
@@ -20,7 +18,8 @@ void draw_ray(SDL_Instance *win, Maze *this)
 	Vector *vecX, *vecY;
 
 	MAZE
-
+	(void)rx;
+	(void)ry;
 	ra = fix_ang(player->ang + 30);
 	for (r = 0; r <= 60; r++)
 	{
@@ -43,14 +42,11 @@ void draw_ray(SDL_Instance *win, Maze *this)
 			/** light shade **/
 			SDL_SetRenderDrawColor(win->renderer, 105, 105, 105, 255);
 		}
-
 		/**draw_line(win, player->x, player->y, rx, ry);**/
-
 		vecX->dist *= cos(deg_to_rad(ra - player->ang));
 		slice = ((map->gridS << 1) / vecX->dist) * DIST_TO_PLANE;
 
 		slice /= 2;
-
 		if (slice > PLANE_H)
 			slice = PLANE_H;
 
@@ -97,10 +93,9 @@ Vector *vertical_lines(Maze *this, float ra, float Tan)
 		ry = player->y;
 		dof = map->DOF;
 	}
-
 	Vector arr[] = {{rx, ry, ra}, {xo, yo, 0.0}};
 
-	vec = cast_ray(*this, arr, dof, disV, Tan);
+	vec = cast_ray(this, arr, dof, disV);
 	return (vec);
 
 }
@@ -148,7 +143,7 @@ Vector *horizontal_lines(Maze *this, float ra, float Tan)
 
 	Vector arr[] = {{rx, ry, ra}, {xo, yo, 0.0}};
 
-	vec = cast_ray(*this, arr, dof, disH, Tan);
+	vec = cast_ray(this, arr, dof, disH);
 	return (vec);
 }
 
@@ -159,42 +154,34 @@ Vector *horizontal_lines(Maze *this, float ra, float Tan)
  * @arr: Input, ray and offset coordinates
  * @dof: Input, depth of field
  * @dis: Input, distance
- * @Tan: Input, tangent
  *
  * Return: Vector (ray: x&y, distance)
  **/
-Vector *cast_ray(Maze this, Vector *arr,  int dof, float dis, float Tan)
+Vector *cast_ray(Maze *this, Vector *arr,  int dof, float dis)
 {
-	int mx, my, mp, dov, gridX, gridY;
-	float ra, rx, ry, px, py, xo, yo, dist_rpx, dist_rpy;
+	int mx, my, mp, gridX, gridY;
+	float ra, rx, ry, xo, yo, dist_rpx, dist_rpy;
 	Vector *vec;
 
+	MAZE
 	ra = arr[0].dist;
 	rx = arr[0].x;
 	ry = arr[0].y;
-
 	xo = arr[1].x;
 	yo = arr[1].y;
 
-	px = this.player->x;
-	py = this.player->y;
-
-	dov = this.map->DOF;
-
-	while (dof < dov)
+	while (dof < map->DOF)
 	{
 		mx = (int)(rx) >> 6;
 		my = (int)(ry) >> 6;
-		mp = my * this.map->gridX + mx;
-
-		gridX = this.map->gridX;
-		gridY = this.map->gridY;
-		if (mp > 0 && mp < gridX * gridY && this.map->grid[mp] == 1)
+		mp = my * map->gridX + mx;
+		gridX = map->gridX;
+		gridY = map->gridY;
+		if (mp > 0 && mp < gridX * gridY && map->grid[mp] == 1)
 		{
-			dof = dov;
-			dist_rpx = this.math->cos_lookup[(int)ra % 360] * (rx - px);
-			dist_rpy = this.math->sin_lookup[(int)ra % 360] * (ry - py);
-
+			dof = map->DOF;
+			dist_rpx = math->cos_lookup[(int)ra % 360] * (rx - player->x);
+			dist_rpy = math->sin_lookup[(int)ra % 360] * (ry - player->y);
 			dis = dist_rpx - dist_rpy;
 		}
 		else
@@ -204,11 +191,9 @@ Vector *cast_ray(Maze this, Vector *arr,  int dof, float dis, float Tan)
 			dof += 1;
 		}
 	}
-
 	vec = malloc(sizeof(Vector));
 	if (vec == NULL)
 		return (NULL);
-
 	vec->x = rx;
 	vec->y = ry;
 	vec->dist = dis;

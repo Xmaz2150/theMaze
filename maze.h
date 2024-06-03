@@ -9,7 +9,11 @@
 #define MAZE \
 	Player *player = this->player; \
 	Grid *map = this->map; \
-	Math *math = this->math;
+	Math *math = this->math; \
+	\
+	(void)player; \
+	(void)map; \
+	(void)math;
 
 typedef struct SDL_Instance {
 	SDL_Window *window;
@@ -73,6 +77,7 @@ void draw_grid(SDL_Instance *win, Grid *map);
 void draw_ray(SDL_Instance *win, Maze *maze);
 Vector *horizontal_lines(Maze *maze, float ra, float Tan);
 Vector *vertical_lines(Maze *maze, float ra, float Tan);
+Vector *cast_ray(Maze *maze, Vector *arr,  int dof, float dis);
 
 int key_events(Maze *maze);
 void update_pos(Maze *maze, float dx, float dy, char flag);
