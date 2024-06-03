@@ -1,4 +1,4 @@
-#include "maze.h"
+#include "../inc/maze.h"
 
 /**
  * m_init - initializes integral types

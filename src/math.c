@@ -1,4 +1,4 @@
-#include "maze.h"
+#include "../inc/maze.h"
 
 /**
  * precompute_lookup_tables - initializes sin an cos lookup tables

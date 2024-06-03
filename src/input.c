@@ -1,4 +1,4 @@
-#include "maze.h"
+#include "../inc/maze.h"
 
 /**
  * key_events - listens to key presses

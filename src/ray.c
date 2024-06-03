@@ -1,4 +1,4 @@
-#include "maze.h"
+#include "../inc/maze.h"
 
 #define PLANE_W 320
 #define PLANE_H 200

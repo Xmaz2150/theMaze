@@ -1,6 +1,7 @@
-#include "maze.h"
+#include "../inc/maze.h"
+
 /*gcc -o maze maze.c -Iinclude/SDL2 -Llib -lmingw32 -lSDL2main -lSDL2*/
-/*gcc -Wall -Werror -Wextra -pedantic *.c -o maze -lSDL2 -lm*/
+/*gcc -Wall -Werror -Wextra -pedantic src/*.c -o maze -lSDL2 -lm*/
 
 /**
  * main - entry point for the Maze
