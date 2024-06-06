@@ -1,5 +1,8 @@
 #include "../inc/maze.h"
 
+void update_angle(Maze *this, float angle);
+void toggle_weapon(Maze *this, SDL_Keycode key);
+
 /**
  * key_events - listens to key presses
  * @this: Input- player, grid & math
@@ -23,29 +26,57 @@ int key_events(Maze *this)
 				if (key.keysym.sym == SDLK_ESCAPE)
 					return (1);
 				if (key.keysym.sym == SDLK_LEFT)
-				{
-					player->ang = fix_ang(player->ang + 5);
-					player->dx = math->cos_lookup[(int)player->ang % 360];
-					player->dy = -math->sin_lookup[(int)player->ang % 360];
-				}
+					update_angle(this, 5);
 				if (key.keysym.sym == SDLK_RIGHT)
-				{
-					player->ang = fix_ang(player->ang - 5);
-					player->dx = math->cos_lookup[(int)player->ang % 360];
-					player->dy = -math->sin_lookup[(int)player->ang % 360];
-				}
+					update_angle(this, -5);
 				if (key.keysym.sym == SDLK_UP)
 					update_pos(this, player->dx * 5, player->dy * 5, 'u');
-
 				if (key.keysym.sym == SDLK_DOWN)
 					update_pos(this, player->dx * 5, player->dy * 5, 'd');
-
 				if (key.keysym.sym == SDLK_g)
 					map->draw = !map->draw;
+				if (key.keysym.sym == SDLK_r || key.keysym.sym == SDLK_t)
+					toggle_weapon(this, key.keysym.sym);
 				break;
 		}
 	}
 	return (0);
+}
+
+/**
+ * toggle_weapon - toggles weapon
+ * @this: Input- player, grid & math
+ * @key: Input, key pressed
+ *
+ **/
+void toggle_weapon(Maze *this, SDL_Keycode key)
+{
+	MAZE
+
+	if (key == SDLK_r)
+	{
+		if (map->scale == 0)
+			map->scale += 1;
+	}
+	else if (key == SDLK_t)
+	{
+		if (map->scale == 1)
+			map->scale -= 1;
+	}
+}
+/**
+ * update_angle - updates player angle
+ * @this: Input- player, grid & math
+ * @angle: Input, angle to update
+ *
+ **/
+void update_angle(Maze *this, float angle)
+{
+	MAZE
+
+	player->ang = fix_ang(player->ang + angle);
+	player->dx = math->cos_lookup[(int)player->ang % 360];
+	player->dy = -math->sin_lookup[(int)player->ang % 360];
 }
 
 /**

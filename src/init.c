@@ -48,6 +48,7 @@ int init_map(Grid *map)
 		return (1);
 
 	map->draw = true;
+	map->scale = 0;
 	map->gridX = 12;
 	map->gridY = 12;
 	map->gridS = 64;
