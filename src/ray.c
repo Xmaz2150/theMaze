@@ -1,4 +1,7 @@
 #include "../inc/maze.h"
+#include "../inc/textures.h"
+
+void s_texture(SDL_Instance *win, float slice, float shade, Vector ray, float r);
 
 /**
  * draw_ray - casts rays
@@ -8,8 +11,8 @@
 
 void draw_ray(SDL_Instance *win, Maze *this)
 {
-	float vx, vy, rx, ry, ra, r, Tan, slice;
-	Vector *vecX, *vecY;
+	float vx, vy, rx, ry, ra, r, Tan, slice, shade;
+	Vector vecX, vecY;
 
 	MAZE
 	(void)rx;
@@ -20,23 +23,26 @@ void draw_ray(SDL_Instance *win, Maze *this)
 		Tan = tan(deg_to_rad(ra));
 
 		vecY = vertical_lines(this, ra, Tan);
-		vx = vecY->x;
-		vy = vecY->y;
+		vx = vecY.x;
+		vy = vecY.y;
 		vecX = horizontal_lines(this, ra, Tan);
 		/** dark shade **/
 		SDL_SetRenderDrawColor(win->renderer, 125, 125, 125, 255);
-		if (vecY->dist < vecX->dist)
+		shade = 1;
+
+		if (vecY.dist < vecX.dist)
 		{
 			rx = vx;
 			ry = vy;
-			vecX->dist = vecY->dist;
+			vecX.dist = vecY.dist;
 			/** lighter shade **/
 			SDL_SetRenderDrawColor(win->renderer, 105, 105, 105, 255);
+			shade = 0.5;
 		}
 		else
 		{
-			rx = vecX->x;
-			ry = vecX->y;
+			rx = vecX.x;
+			ry = vecX.y;
 		}
 		if (map->draw == true)
 			draw_l(win,
@@ -44,14 +50,56 @@ void draw_ray(SDL_Instance *win, Maze *this)
 			player->y / 10,
 			rx / 10 + (P_W + 20), ry / 10);
 
-		vecX->dist *= cos(deg_to_rad(ra - player->ang));
-		slice = ((map->gridS << 1) / vecX->dist) * DIST_TO_PLANE;
+		vecX.dist *= cos(deg_to_rad(ra - player->ang));
+		slice = ((map->gridS << 1) / vecX.dist) * DIST_TO_PLANE;
 		slice /= 2;
 
-		if (slice > PLANE_H)
-			slice = PLANE_H;
-		draw_rect(win, (r * SLICE_W), (PLANE_H - slice) / 2, SLICE_W, slice);
+		Vector ray = {rx, ry, ra};
+
+		s_texture(win, slice, shade, ray, r);
+
 		ra = fix_ang(ra - ANGLE_INC);
+	}
+}
+
+void s_texture(SDL_Instance *win, float slice, float shade, Vector ray, float r)
+{
+	float tx, ty, ty_off, ty_step;
+	float ra, rx, ry;
+	int y;
+
+	ra = ray.dist;
+	rx = ray.x;
+	ry = ray.y;
+
+	ty_step = 32.0 / (float)slice;
+	ty_off = 0;
+	if (slice > PLANE_H)
+	{
+		ty_off = (slice - PLANE_H) / 2.0;
+		slice = PLANE_H;
+	}
+	ty = ty_off * ty_step;
+	if (shade == 1)
+	{
+		tx = (int)(rx / 2.0) % 32;
+		if (ra > 180)
+			tx = 31 - tx;
+	}
+	else
+	{
+		tx = (int)(ry / 2.0) % 32;
+		if (ra > 180)
+			tx = 31 - tx;
+	}
+
+	for (y = 0; y < slice; y++)
+	{
+		float c = (All_Textures[(int)(ty) * 32 + (int) (tx)] * shade) * 255;
+
+		SDL_SetRenderDrawColor(win->renderer, c, c, c, 255);
+		draw_rect(win, (r * SLICE_W), ((PLANE_H - slice) / 2) + y, SLICE_W, SLICE_W);
+		ty += ty_step;
 	}
 }
 /**
@@ -62,11 +110,11 @@ void draw_ray(SDL_Instance *win, Maze *this)
  *
  * Return: Vector
  **/
-Vector *vertical_lines(Maze *this, float ra, float Tan)
+Vector vertical_lines(Maze *this, float ra, float Tan)
 {
 	float rx, ry, xo, yo, disV;
 	int dof;
-	Vector *vec;
+	Vector vec;
 
 	MAZE
 
@@ -107,11 +155,11 @@ Vector *vertical_lines(Maze *this, float ra, float Tan)
  *
  * Return: Vector
  **/
-Vector *horizontal_lines(Maze *this, float ra, float Tan)
+Vector horizontal_lines(Maze *this, float ra, float Tan)
 {
 	float rx, ry, xo, yo, disH;
 	int dof;
-	Vector *vec;
+	Vector vec;
 
 	MAZE
 
@@ -156,11 +204,11 @@ Vector *horizontal_lines(Maze *this, float ra, float Tan)
  *
  * Return: Vector (ray: x&y, distance)
  **/
-Vector *cast_ray(Maze *this, Vector *arr,  int dof, float dis)
+Vector cast_ray(Maze *this, Vector *arr,  int dof, float dis)
 {
 	int mx, my, mp, gridX, gridY;
 	float ra, rx, ry, xo, yo, dist_rpx, dist_rpy;
-	Vector *vec;
+	Vector vec;
 
 	MAZE
 	ra = arr[0].dist;
@@ -190,11 +238,8 @@ Vector *cast_ray(Maze *this, Vector *arr,  int dof, float dis)
 			dof += 1;
 		}
 	}
-	vec = malloc(sizeof(Vector));
-	if (vec == NULL)
-		return (NULL);
-	vec->x = rx;
-	vec->y = ry;
-	vec->dist = dis;
+	vec.x = rx;
+	vec.y = ry;
+	vec.dist = dis;
 	return (vec);
 }

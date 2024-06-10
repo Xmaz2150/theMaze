@@ -29,9 +29,9 @@ int init_player(Player *player);
 int init_map(Grid *map);
 
 void draw_ray(SDL_Instance *win, Maze *maze);
-Vector *horizontal_lines(Maze *maze, float ra, float Tan);
-Vector *vertical_lines(Maze *maze, float ra, float Tan);
-Vector *cast_ray(Maze *maze, Vector *arr,  int dof, float dis);
+Vector horizontal_lines(Maze *maze, float ra, float Tan);
+Vector vertical_lines(Maze *maze, float ra, float Tan);
+Vector cast_ray(Maze *maze, Vector *arr,  int dof, float dis);
 
 int key_events(Maze *maze);
 void update_pos(Maze *maze, float dx, float dy, char flag);
