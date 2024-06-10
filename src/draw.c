@@ -80,7 +80,7 @@ void draw_grid(SDL_Instance *win, Grid *map)
 			yo = y * gridS;
 			SDL_Rect fillRect = {xo + (320 - 2.5), yo - 2.5, gridS - 1, gridS - 1};
 
-			if (map->grid[idx] == 1)
+			if (map->grid[idx] > 0)
 				SDL_SetRenderDrawColor(win->renderer, 255, 255, 0, 255);
 			else
 				SDL_SetRenderDrawColor(win->renderer, 255, 255, 255, 255);
