@@ -21,9 +21,9 @@ void draw_stuff(SDL_Instance *win, Maze *this)
 		draw_rect(win, (player->x / 10) + 320 - 2.5, (player->y / 10) - 2.5, 5, 5);
 	}
 	draw_ray(win, this);
-	const char *weapons[] = {"assets/sprites/9mm.png", "assets/sprites/pump.png"};
+	/**const char *weapons[] = {"assets/sprites/9mm.png", "assets/sprites/pump.png"};
 
-	display_image(win, weapons[s]);
+	display_image(win, weapons[s]);**/
 }
 
 /**
