@@ -21,9 +21,13 @@ void draw_stuff(SDL_Instance *win, Maze *this)
 		draw_rect(win, (player->x / 10) + 320 - 2.5, (player->y / 10) - 2.5, 5, 5);
 	}
 	draw_ray(win, this);
-	/**const char *weapons[] = {"assets/sprites/9mm.png", "assets/sprites/pump.png"};
-
-	display_image(win, weapons[s]);**/
+	/**
+	 * const char *weapons[] = {
+	 * "assets/sprites/9mm.png",
+	 * "assets/sprites/pump.png"
+	 * };
+	 * display_image(win, weapons[s]);
+	**/
 }
 
 /**
@@ -79,7 +83,7 @@ void draw_grid(SDL_Instance *win, Grid *map)
 			yo = y * gridS;
 			SDL_Rect fillRect = {xo + (320 - 2.5), yo - 2.5, gridS - 1, gridS - 1};
 
-			if (map->grid[idx] == 1)
+			if (map->grid[idx] > 0)
 				SDL_SetRenderDrawColor(win->renderer, 255, 255, 0, 255);
 			else
 				SDL_SetRenderDrawColor(win->renderer, 255, 255, 255, 255);

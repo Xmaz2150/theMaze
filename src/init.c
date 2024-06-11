@@ -43,18 +43,6 @@ int init_player(Player *player)
 int init_map(Grid *map)
 {
 	int i;
-
-	if (map == NULL)
-		return (1);
-
-	map->draw = true;
-	map->scale = 0;
-	map->gridX = 12;
-	map->gridY = 12;
-	map->gridS = 64;
-
-	map->DOF = map->gridX;
-
 	int grid[] = {
 		1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 		1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
@@ -69,6 +57,17 @@ int init_map(Grid *map)
 		1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
 		1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 	};
+
+	if (map == NULL)
+		return (1);
+
+	map->draw = true;
+	map->scale = 0;
+	map->gridX = 12;
+	map->gridY = 12;
+	map->gridS = 64;
+
+	map->DOF = map->gridX;
 
 	for (i = 0; i < (map->gridX * map->gridY); i++)
 		map->grid[i] = grid[i];
