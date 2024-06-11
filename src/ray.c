@@ -12,6 +12,8 @@ void s_texture(SDL_Instance *win, float slice, float shade, Vector ray, float r,
 void draw_ray(SDL_Instance *win, Maze *this)
 {
 	float vx, vy, rx, ry, ra, r, Tan, slice, shade;
+	int vmt, hmt;
+
 	Vector vecX, vecY;
 
 	MAZE
@@ -20,7 +22,7 @@ void draw_ray(SDL_Instance *win, Maze *this)
 	ra = fix_ang(player->ang + 30);
 	for (r = 0; r <= 60; r++)
 	{
-		int vmt=0, hmt=0; //vertical and horizontal map trxture #
+		vmt = 0, hmt = 0;
 		Tan = tan(deg_to_rad(ra));
 
 		vecY = vertical_lines(this, ra, Tan, &vmt);
@@ -33,7 +35,7 @@ void draw_ray(SDL_Instance *win, Maze *this)
 
 		if (vecY.dist < vecX.dist)
 		{
-			hmt=vmt;
+			hmt = vmt;
 			rx = vx;
 			ry = vy;
 			vecX.dist = vecY.dist;
@@ -64,6 +66,15 @@ void draw_ray(SDL_Instance *win, Maze *this)
 	}
 }
 
+/**
+ * s_texture - draws slice texture
+ * @win: Input, window
+ * @slice: Input, slice of wall
+ * @shade: Input, shade of wall
+ * @ray: Input, ray
+ * @r: Input, ray number
+ * @mapt: Input, map texture
+ **/
 void s_texture(SDL_Instance *win, float slice, float shade, Vector ray, float r, int mapt)
 {
 	float tx, ty, ty_off, ty_step;
@@ -81,7 +92,7 @@ void s_texture(SDL_Instance *win, float slice, float shade, Vector ray, float r,
 		ty_off = (slice - PLANE_H) / 2.0;
 		slice = PLANE_H;
 	}
-	ty = ty_off * ty_step + mapt*32;
+	ty = ty_off * ty_step + mapt * 32;
 	if (shade == 1)
 	{
 		tx = (int)(rx / 2.0) % 32;
@@ -90,15 +101,14 @@ void s_texture(SDL_Instance *win, float slice, float shade, Vector ray, float r,
 	}
 	else
 	{
-		/**
-		* tx = (int)(ry / 2.0) % 32; if (ra > 90 && ra < 270) {tx = 31 - tx;}
-		* **/
 		tx = (int)(ry / 2.0) % 32;
-		if (ra > 180)
+		if (ra > 90 && ra < 270)
+		{
 			tx = 31 - tx;
+		}
 	}
 
-	ty += 32*2;
+	ty += 32;
 	for (y = 0; y < slice; y++)
 	{
 		float c = (All_Textures[(int)(ty) * 32 + (int) (tx)] * shade) * 255;
@@ -113,6 +123,7 @@ void s_texture(SDL_Instance *win, float slice, float shade, Vector ray, float r,
  * @this: Input- player, grid & math
  * @ra: Input, current ray angle
  * @Tan: Input, tangent
+ * @vmt: Input, vertical map texture
  *
  * Return: Vector
  **/
@@ -158,6 +169,7 @@ Vector vertical_lines(Maze *this, float ra, float Tan, int *vmt)
  * @this: Input- player, grid & math
  * @ra: Input, current ray angle
  * @Tan: Input, tangent
+ * @hmt: Input, horizontal map texture
  *
  * Return: Vector
  **/
@@ -207,6 +219,7 @@ Vector horizontal_lines(Maze *this, float ra, float Tan, int *hmt)
  * @arr: Input, ray and offset coordinates
  * @dof: Input, depth of field
  * @dis: Input, distance
+ * @mapt: Input, map texture
  *
  * Return: Vector (ray: x&y, distance)
  **/

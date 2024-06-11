@@ -22,7 +22,10 @@ void draw_stuff(SDL_Instance *win, Maze *this)
 	}
 	draw_ray(win, this);
 	/**
-	 * const char *weapons[] = {"assets/sprites/9mm.png", "assets/sprites/pump.png"};
+	 * const char *weapons[] = {
+	 * "assets/sprites/9mm.png",
+	 * "assets/sprites/pump.png"
+	 * };
 	 * display_image(win, weapons[s]);
 	**/
 }
