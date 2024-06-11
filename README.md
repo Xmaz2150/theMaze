@@ -1,23 +1,29 @@
 # theMaze
-![Screenshot from 2024-05-28 21-36-08](https://github.com/Xmaz2150/theMaze/assets/113725438/3d3d3ecb-2121-4698-92b9-408d6a3968cc)
-## Attributes
 
-**World**
+![6  Draw the map](https://github.com/Xmaz2150/theMaze/assets/113725438/96491bc4-9c10-4d60-8fb2-953b56359701)
 
-wall width & height: 64
+This project is a 3D maze game developed in C. At its core, the game utilizes ray casting techniques to render a three-dimensional perspective within a two-dimensional map. Player can navigate through the enclosed maze, with basic physics ensuring player stays within bounds.
 
-**Player**
+## installation
+### Libraries:
 
-height : wall/2
 
-FOV : 60
+  [**SDL2** for Linux](https://lazyfoo.net/tutorials/SDL/01_hello_SDL/linux/index.php)
 
-**Projection Plane**
+  **SDL Image**: `sudo apt-get install libsdl2-image-dev`
 
-width : 305
+### Build:
+  `make`
 
-height : 200
 
-distance to PP : (height/2)/tan(pFOV/2)
+## Usage
+### Run:
 
-angle between subsequent rays : 1 degree
+
+  `./maze`
+
+### Controls:
+
+  **look around**: Left & Right arrow keys
+
+  **Moving**: Up & Down arrow keys
