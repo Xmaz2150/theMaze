@@ -1,4 +1,4 @@
-#include "../inc/maze.h"
+#include "maze/inc/maze.h"
 
 void update_angle(Maze *this, float angle);
 void toggle_weapon(Maze *this, SDL_Keycode key);

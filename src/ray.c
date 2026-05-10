@@ -1,5 +1,5 @@
-#include "../inc/maze.h"
-#include "../inc/textures.h"
+#include "maze/inc/maze.h"
+#include "maze/inc/textures.h"
 
 void s_texture(SDL_Instance *win, float slice, float shade, Vector ray, float r, int mapt);
 
@@ -11,8 +11,8 @@ void s_texture(SDL_Instance *win, float slice, float shade, Vector ray, float r,
 
 void draw_ray(SDL_Instance *win, Maze *this)
 {
-	float vx, vy, rx, ry, ra, r, Tan, slice, shade;
-	int vmt, hmt;
+	float vx = 0.0f, vy = 0.0f, rx = 0.0f, ry = 0.0f, ra = 0.0f, r = 0.0f, Tan = 0.0f, slice = 0.0f, shade = 0.0f;
+	int vmt = 0, hmt = 0.0f;
 
 	Vector vecX, vecY;
 
@@ -77,9 +77,9 @@ void draw_ray(SDL_Instance *win, Maze *this)
  **/
 void s_texture(SDL_Instance *win, float slice, float shade, Vector ray, float r, int mapt)
 {
-	float tx, ty, ty_off, ty_step;
-	float ra, rx, ry;
-	int y;
+	float tx = 0.0f, ty = 0.0f, ty_off = 0.0f, ty_step = 0.0f;
+	float ra = 0.0f, rx = 0.0f, ry = 0.0f;
+	int y = 0;
 
 	ra = ray.dist;
 	rx = ray.x;
@@ -129,7 +129,7 @@ void s_texture(SDL_Instance *win, float slice, float shade, Vector ray, float r,
  **/
 Vector vertical_lines(Maze *this, float ra, float Tan, int *vmt)
 {
-	float rx, ry, xo, yo, disV;
+	float rx = 0.0f, ry = 0.0f, xo = 0.0f, yo = 0.0f, disV = 0.0f;
 	int dof;
 	Vector vec;
 
@@ -175,8 +175,8 @@ Vector vertical_lines(Maze *this, float ra, float Tan, int *vmt)
  **/
 Vector horizontal_lines(Maze *this, float ra, float Tan, int *hmt)
 {
-	float rx, ry, xo, yo, disH;
-	int dof;
+	float rx = 0.0f, ry = 0.0f, xo = 0.0f, yo = 0.0f, disH = 0.0f;
+	int dof = 0;
 	Vector vec;
 
 	MAZE
@@ -225,8 +225,8 @@ Vector horizontal_lines(Maze *this, float ra, float Tan, int *hmt)
  **/
 Vector cast_ray(Maze *this, Vector *arr,  int dof, float dis, int *mapt)
 {
-	int mx, my, mp, gridX, gridY;
-	float ra, rx, ry, xo, yo, dist_rpx, dist_rpy;
+	int mx = 0, my = 0, mp = 0, gridX = 0, gridY = 0;
+	float ra = 0.0f, rx = 0.0f, ry = 0.0f, xo = 0.0f, yo = 0.0f, dist_rpx = 0.0f, dist_rpy = 0.0f;
 	Vector vec;
 
 	MAZE

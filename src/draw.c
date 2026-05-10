@@ -1,4 +1,4 @@
-#include "../inc/maze.h"
+#include "maze/inc/maze.h"
 
 /**
  * draw_stuff - draws graphics to window
